@@ -1,10 +1,9 @@
 import "../style/index.css";
 
 /**
- *  EDIT ONLY INSIDE THIS RENDER FUNCTION
- *  This function is called every time the user changes types or changes any input
- * 
-    {
+ * EDIT ONLY INSIDE THIS RENDER FUNCTION
+ * This function is called every time the user changes types or changes any input
+ * {
         includeCover: true, // if includeCover is true the algorithm should show the cover image
         background: "https://images.unsplash.com/photo-1511974035430-5de47d3b95da", // this is the image's url that will be used as a background for the profile cover
         avatarURL: "https://randomuser.me/api/portraits/women/42.jpg", // this is the url for the profile avatar
@@ -24,23 +23,51 @@ import "../style/index.css";
  */
 function render(variables = {}) {
   console.log("These are the current variables: ", variables); // print on the console
-  // here we ask the logical questions to make decisions on how to build the html
-  // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
-  let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
-  if (variables.includeCover == false) cover = "<div class='cover'></div>";
 
-  // reset the website body with the new html output
+  let cover = `<div class="cover"><img src="${variables.background}" /></div>`;
+  if (variables.includeCover === false) cover = "<div class='cover'></div>";
+
+  const fullName =
+    `${variables.name || ""} ${variables.lastName || ""}`.trim() ||
+    "Nombre Apellido";
+
+  const roleText = variables.role || "Sin Rol";
+
+  let locationText = "";
+  if (variables.city && variables.country) {
+    locationText = `${variables.city}, ${variables.country}`;
+  } else if (variables.city) {
+    locationText = variables.city;
+  } else if (variables.country) {
+    locationText = variables.country;
+  } else {
+    locationText = "Ubicación Desconocida";
+  }
+
+  const twitterURL = variables.twitter
+    ? `https://twitter.com/${variables.twitter}`
+    : "https://twitter.com/4geeksacademy";
+  const githubURL = variables.github
+    ? `https://github.com/${variables.github}`
+    : "https://github.com/4geeksacademy";
+  const linkedinURL = variables.linkedin
+    ? `https://linkedin.com/in/${variables.linkedin}`
+    : "https://linkedin.com/school/4geeksacademy";
+  const instagramURL = variables.instagram
+    ? `https://instagram.com/${variables.instagram}`
+    : "https://instagram.com/4geeksacademy";
+
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/school/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
+          <h1>${fullName}</h1>
+          <h2>${roleText}</h2>
+          <h3>${locationText}</h3>
+          <ul class="${variables.socialMediaPosition}">
+            <li><a href="${twitterURL}"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="${githubURL}"><i class="fab fa-github"></i></a></li>
+            <li><a href="${linkedinURL}"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="${instagramURL}"><i class="fab fa-instagram"></i></a></li>
           </ul>
         </div>
     `;
